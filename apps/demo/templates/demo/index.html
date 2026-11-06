@@ -1,0 +1,65 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="description" content="A standalone Django demo of B2 Store's server-authoritative customization and pricing engine."/>
+<title>MOHD · Configurable Commerce Engine</title>
+<link rel="stylesheet" href="{% static 'demo/style.css' %}"/>
+<script src="{% static 'demo/app.js' %}" defer></script>
+</head>
+<body>
+<div class="page-shell">
+  <header class="topbar" id="top">
+    <a class="brand" href="#top"><span class="brand-mark">MO<span>HD</span></span><span>CONFIGURABLE COMMERCE<br><small>AN ENGINEERING CASE STUDY</small></span></a>
+    <div class="top-right"><span class="live-dot"></span><span>LOCAL DJANGO DEMO</span><span class="top-separator"></span><a href="#details">How it works <span aria-hidden="true">↗</span></a></div>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="headline">
+      <div class="hero-copy"><div class="eyebrow"><span class="line"></span> SOURCE-BACKED · ACTUAL DJANGO PRICING</div>
+        <h1 id="headline">One engine.<br><em>Three industries.</em></h1>
+        <p>A small public demonstration of the real configuration-driven pricing logic developed for MOHD Commerce. Switch industries, change options, and watch Django validate and calculate every quote on the server.</p>
+        <div class="hero-points"><span>01 / Reusable options</span><span>02 / Conditional pricing</span><span>03 / Frozen snapshots</span></div>
+      </div>
+      <div class="hero-symbol" aria-hidden="true"><div class="orbit orbit-1"></div><div class="orbit orbit-2"></div><div class="symbol-core">MO<span>HD</span></div><span class="symbol-label tl">CONFIGURE</span><span class="symbol-label tr">VALIDATE</span><span class="symbol-label br">CALCULATE</span></div>
+    </section>
+    <section class="playground" id="playground" aria-label="Interactive product configuration">
+      <div class="section-heading"><div><span class="eyebrow">01 — TRY THE REAL ENGINE</span><h2>Select an industry.</h2></div><p>Different inputs. One pricing authority.</p></div>
+      <div class="product-switch" id="product-switch" role="tablist" aria-label="Product examples"><div class="loading">Loading demonstration products…</div></div>
+      <div class="workbench">
+        <div class="configuration-panel">
+          <div class="product-intro" id="product-intro"><span class="skeleton-line"></span></div>
+          <div id="option-groups" class="option-groups"><p class="muted">Connecting to the local Django server…</p></div>
+        </div>
+        <aside class="receipt" aria-label="Server calculated price">
+          <div class="receipt-top"><span class="receipt-kicker"><span class="live-dot light"></span> SERVER QUOTE</span><span class="receipt-code">MOHD / PRICING.PY</span></div>
+          <h3>The price<br><em>explained.</em></h3>
+          <p class="receipt-explainer">Nothing in this panel is trusted from your browser. Django computes the final price from stored product configurations.</p>
+          <div class="receipt-rows" id="receipt-rows"><div class="receipt-wait">Select a product to calculate a quote.</div></div>
+          <div class="receipt-final"><span>PRICE INCLUDING VAT</span><strong id="receipt-total">—</strong><small>Illustrative Saudi VAT (15%)</small></div>
+          <div id="quote-error" class="quote-error" role="alert" hidden></div>
+          <button id="snapshot-button" class="snapshot-button" type="button" disabled>Freeze this quote <span aria-hidden="true">↗</span></button>
+          <p class="receipt-disclaimer">Creates a local demonstration snapshot, not an order or payment.</p>
+        </aside>
+      </div>
+    </section>
+    <section class="snapshot-section" id="snapshot-section" hidden aria-live="polite">
+      <div class="snapshot-head"><span class="eyebrow">02 — HISTORICAL DATA INTEGRITY</span><span class="snapshot-state">✓ FROZEN IN SQLITE</span></div>
+      <h2>Today's quote.<br><em>Tomorrow's evidence.</em></h2>
+      <p>A saved snapshot records the option names, selected quantities, applied market values, adjustments and final total. Later product or market changes do not recalculate this record.</p>
+      <div class="snapshot-card"><div><span>DEMO SNAPSHOT ID</span><code id="snapshot-id">—</code></div><a id="snapshot-link" href="#" target="_blank" rel="noopener">Inspect frozen JSON ↗</a></div>
+    </section>
+    <section class="architecture" id="details"><div class="section-heading"><div><span class="eyebrow">03 — ENGINEERING NOTES</span><h2>What's actually running.</h2></div><p>Source code, not a browser-only pricing simulation.</p></div>
+      <div class="architecture-grid">
+        <article><span class="card-no">01</span><h3>Shared configuration</h3><p>Real Django models store bilingual reusable option groups, choices, levels and product-type associations.</p><code>apps/options/models.py</code></article>
+        <article><span class="card-no">02</span><h3>Authoritative calculation</h3><p>The B2 Store pricing function validates selections and applies fixed, percent, market-based and quantity-sensitive adjustments.</p><code>apps/options/pricing.py</code></article>
+        <article><span class="card-no">03</span><h3>Frozen price evidence</h3><p>The demo stores a quote snapshot separately, illustrating the original backend's historical price-preservation design.</p><code>apps/demo/views.py</code></article>
+      </div>
+      <div class="scope-note"><strong>Deliberately scoped.</strong> The original store uses Django Oscar and PostgreSQL. This extract uses a minimal Oscar-compatible catalogue and SQLite so the pricing logic can be examined without running the entire merchant platform. No real payments, customer accounts, external API credentials or business data are included.</div>
+    </section>
+  </main>
+  <footer><div><strong>B2 / CONFIGURABLE COMMERCE</strong><span>Engineering demonstration · Local-first · Synthetic catalogue</span></div><a href="#top">Back to top ↑</a></footer>
+</div>
+</body>
+</html>
