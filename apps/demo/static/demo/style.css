@@ -79,3 +79,229 @@
     animation: none;
   }
 }
+
+
+/* =========================================
+   THEME SWITCH
+   ========================================= */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: transparent;
+  color: inherit;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(105, 136, 120, 0.1);
+}
+
+.theme-icon {
+  width: 14px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* =========================================
+   DARK MODE
+   ========================================= */
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #e2eee7;
+  --ink-soft: #9eb5aa;
+  --sage: #17251f;
+  --cream: #0d1512;
+  --line: #293d35;
+  --accent: #88c7a5;
+  --dark: #0b2119;
+  --white: #16231e;
+}
+
+html[data-theme="dark"] body {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .brand small,
+html[data-theme="dark"] .top-right,
+html[data-theme="dark"] .hero p,
+html[data-theme="dark"] .section-heading > p,
+html[data-theme="dark"] .muted {
+  color: #91aa9e;
+}
+
+html[data-theme="dark"] .top-right a {
+  border-color: #668b79;
+}
+
+html[data-theme="dark"] .orbit {
+  border-color: #344d42;
+}
+
+html[data-theme="dark"] .symbol-core {
+  background: #17382c;
+  box-shadow: 0 17px 70px #00000055;
+}
+
+html[data-theme="dark"] .symbol-label,
+html[data-theme="dark"] .eyebrow,
+html[data-theme="dark"] .hero-points {
+  color: #88ac9a;
+}
+
+html[data-theme="dark"] .playground {
+  background: #121f1a;
+  border-color: #24372f;
+}
+
+html[data-theme="dark"] .product-tab,
+html[data-theme="dark"] .configuration-panel,
+html[data-theme="dark"] .architecture-grid article {
+  background: #17251f;
+  border-color: #2b4037;
+}
+
+html[data-theme="dark"] .product-tab:hover {
+  border-color: #5c8e75;
+}
+
+html[data-theme="dark"] .product-tab[aria-selected="true"] {
+  background: #203b30;
+  border-color: #70a98a;
+  box-shadow: inset 0 0 0 1px #70a98a;
+}
+
+html[data-theme="dark"] .product-tab small,
+html[data-theme="dark"] .product-intro p,
+html[data-theme="dark"] .choice-cost,
+html[data-theme="dark"] .stepper-row small {
+  color: #8ba397;
+}
+
+html[data-theme="dark"] .product-intro,
+html[data-theme="dark"] .stepper-row {
+  border-color: #293d35;
+}
+
+html[data-theme="dark"] .choice-button,
+html[data-theme="dark"] .option-group select {
+  background: #111d18;
+  border-color: #31483e;
+  color: #dce9e2;
+}
+
+html[data-theme="dark"] .choice-button:hover {
+  border-color: #628c77;
+}
+
+html[data-theme="dark"] .choice-button[aria-pressed="true"] {
+  background: #254738;
+  border-color: #78b28f;
+  color: #ebf6ef;
+  box-shadow: inset 0 0 0 1px #78b28f;
+}
+
+html[data-theme="dark"] .checkbox-row {
+  color: #c3d7cd;
+}
+
+html[data-theme="dark"] .stepper-actions {
+  border-color: #395448;
+}
+
+html[data-theme="dark"] .stepper-actions button {
+  background: #20372d;
+  color: #9fd6b6;
+}
+
+html[data-theme="dark"] .snapshot-section {
+  background: #16261f;
+}
+
+html[data-theme="dark"] .snapshot-section > p {
+  color: #9ab0a5;
+}
+
+html[data-theme="dark"] .snapshot-card {
+  background: #1b2d25;
+  border-color: #354c41;
+}
+
+html[data-theme="dark"] .snapshot-card span {
+  color: #8da497;
+}
+
+html[data-theme="dark"] .snapshot-card a {
+  color: #9bd3b3;
+}
+
+html[data-theme="dark"] .architecture-grid p,
+html[data-theme="dark"] .scope-note {
+  color: #95aca0;
+}
+
+html[data-theme="dark"] .architecture-grid code {
+  color: #90c4aa;
+}
+
+html[data-theme="dark"] .scope-note {
+  border-color: #638d76;
+}
+
+html[data-theme="dark"] .skeleton-line {
+  background: #24372f;
+}
+
+html[data-theme="dark"] footer span {
+  color: #809a8d;
+}
+
+html[data-theme="dark"] footer a {
+  border-color: #698c7b;
+}
+
+body,
+.playground,
+.snapshot-section,
+.product-tab,
+.configuration-panel,
+.architecture-grid article,
+.choice-button,
+.option-group select,
+.snapshot-card {
+  transition: background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+}
+
+@media (max-width: 740px) {
+  .theme-toggle {
+    padding: 7px;
+  }
+
+  .theme-label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .playground,
+  .snapshot-section,
+  .product-tab,
+  .configuration-panel,
+  .architecture-grid article,
+  .choice-button,
+  .option-group select,
+  .snapshot-card {
+    transition: none;
+  }
+}
