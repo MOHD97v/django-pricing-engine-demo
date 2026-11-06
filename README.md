@@ -1,8 +1,8 @@
-# Configurable Commerce Engine · Django Engineering Demo
+# MOHD Configurable Commerce Engine · Django Engineering Demo
 
 **One reusable customization and pricing engine. Three industries. Real server-side calculations.**
 
-A focused, runnable demonstration of engineering work from the larger **B2 Store** backend. The important part is genuine: the pricing function used here follows the original Django backend's `compute_price()` logic, backed by adapted ORM models and synthetic configuration data. The website submits selections to Django; **it does not calculate prices in JavaScript**.
+A focused, runnable demonstration of engineering work from a larger private Django/Django Oscar commerce backend. The important part is genuine: the pricing function used here follows the original backend's `compute_price()` logic, backed by adapted ORM models and synthetic configuration data. The website submits selections to Django; **it does not calculate prices in JavaScript**.
 
 > **Scope:** Standalone local demo—not the original full Django Oscar store, no actual orders or payments, no production data, and no external credentials. See [`docs/SOURCE_MAP.md`](docs/SOURCE_MAP.md) for an exact breakdown of reused vs adapted vs demonstration-only code.
 
@@ -53,7 +53,7 @@ python manage.py check
 
 The tests cover required selections, maximum choices, cross-product invalid selections, stepper credits and limits, conditional gold/fashion/food pricing, market-rate availability and staleness, ignored client price tampering, VAT, negative final-price rejection, CSRF protection and historical snapshots.
 
-**Important:** Refer to [`docs/TEST_REPORT.md`](docs/TEST_REPORT.md) for verified checks and remaining runtime verification. A screenshot or static syntax check is not a substitute for successfully running the Django test suite.
+**Verified locally:** Python 3.12 + Django 6.1.3 on Windows — **19 tests passed successfully**. Django's system check reported no issues during the test run.
 
 ## Architecture
 
@@ -98,7 +98,7 @@ Core files:
 
 ## The engineering point
 
-A single configurable product platform can interpret different product selection mechanisms and pricing behaviors without creating separate code paths for every merchant industry. Configuration lives in the database; the backend resolves actual rules and validates the final amount. This is the same design principle used in the original B2 Store's dynamic customization platform.
+A single configurable product platform can interpret different product selection mechanisms and pricing behaviors without creating separate code paths for every merchant industry. Configuration lives in the database; the backend resolves actual rules and validates the final amount. This is the same design principle used in the original private commerce platform.
 
 ## Local demo and security boundaries
 
@@ -110,8 +110,8 @@ A single configurable product platform can interpret different product selection
 - This small demo intentionally uses `migrate --run-syncdb` rather than importing the private store's migrations or full Oscar dependencies. The original backend has its own migrations. Do not treat this as a deployment architecture.
 - All seeded products, prices and market quotes are **examples**, not Yagarz/ShipMatrix production values.
 
-## Publishing to GitHub
+## Repository scope
 
-Create a **new, separate repository** and upload this demo after reviewing it. No need to expose the original B2 Store repository. Leave `demo.sqlite3`, `.venv` and `.env` out of commits (already in `.gitignore`). The ZIP does **not** contain a Git history and no GitHub operations were performed while preparing it.
+This public repository is intentionally isolated from the original private commerce backend. Leave `demo.sqlite3`, `.venv` and `.env` out of commits (already covered by `.gitignore`).
 
-Screenshots are UI previews; executable behavior requires running the Django server as above. You can rename the repository; `django-configurable-commerce-engine` is a suggested title.
+Screenshots are UI previews; executable behavior requires running the Django server as described above.
