@@ -6,6 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <meta name="description" content="A standalone Django demo of B2 Store's server-authoritative customization and pricing engine."/>
 <title>MOHD · Configurable Commerce Engine</title>
+<script>
+(() => {
+  try {
+    const saved = localStorage.getItem('mohd-theme');
+    const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+    document.documentElement.dataset.theme = saved || preferred;
+  } catch {
+    document.documentElement.dataset.theme = 'light';
+  }
+})();
+</script>
 <link rel="stylesheet" href="{% static 'demo/style.css' %}"/>
 <script src="{% static 'demo/app.js' %}" defer></script>
 </head>
@@ -13,7 +26,17 @@
 <div class="page-shell">
   <header class="topbar" id="top">
     <a class="brand" href="#top"><span class="brand-mark">MO<span>HD</span></span><span>CONFIGURABLE COMMERCE<br><small>AN ENGINEERING CASE STUDY</small></span></a>
-    <div class="top-right"><span class="live-dot"></span><span>LOCAL DJANGO DEMO</span><span class="top-separator"></span><a href="#details">How it works <span aria-hidden="true">↗</span></a></div>
+    <div class="top-right">
+      <span class="live-dot"></span>
+      <span>LOCAL DJANGO DEMO</span>
+      <span class="top-separator"></span>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+        <span class="theme-icon" aria-hidden="true">☾</span>
+        <span class="theme-label">DARK</span>
+      </button>
+      <span class="top-separator"></span>
+      <a href="#details">How it works <span aria-hidden="true">↗</span></a>
+    </div>
   </header>
   <main>
     <section class="hero" aria-labelledby="headline">
