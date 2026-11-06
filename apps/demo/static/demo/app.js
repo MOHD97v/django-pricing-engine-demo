@@ -6,6 +6,21 @@
   'use strict';
   const state = {products: [], product: null, selections: {}, quote: null, serial: 0};
   const $ = id => document.getElementById(id);
+  const applyTheme = theme => {
+    const dark = theme === 'dark';
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+
+    const toggle = $('theme-toggle');
+    if (!toggle) return;
+
+    toggle.setAttribute('aria-pressed', String(dark));
+    toggle.setAttribute(
+      'aria-label',
+      dark ? 'Switch to light mode' : 'Switch to dark mode'
+    );
+    toggle.querySelector('.theme-icon').textContent = dark ? '☀' : '☾';
+    toggle.querySelector('.theme-label').textContent = dark ? 'LIGHT' : 'DARK';
+  };
   const escapeHTML = s => String(s ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const money = value => `${Number(value ?? 0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} SAR`;
   const cookie = name => document.cookie.split(';').map(x => x.trim()).find(x => x.startsWith(`${name}=`))?.split('=').slice(1).join('=') ?? '';
@@ -193,5 +208,20 @@
     }catch(err){$('quote-error').textContent=err.message;$('quote-error').hidden=false;}
     finally{button.disabled=false;button.innerHTML='Freeze this quote <span aria-hidden="true">↗</span>';}
   });
+  applyTheme(document.documentElement.dataset.theme || 'light');
+
+  $('theme-toggle').addEventListener('click', () => {
+    const current = document.documentElement.dataset.theme || 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+
+    applyTheme(next);
+
+    try {
+      localStorage.setItem('mohd-theme', next);
+    } catch {
+      // Theme still works even when browser storage is unavailable.
+    }
+  });
+
   load();
 })();
