@@ -75,6 +75,8 @@ def compute_price(product, base_price, selections):
     Original legacy {choice_id: level_id} is also supported.
     """
     pclass = product.get_product_class()
+    # Restrict pricing to option groups actually attached to this product type.
+    # This prevents a valid choice from another product type being accepted here.
     groups = {
         link.group_id: link.group
         for link in ProductClassOption.objects.filter(
@@ -96,6 +98,8 @@ def compute_price(product, base_price, selections):
         level.id: level
         for level in OptionLevel.objects.filter(id__in=requested_level_ids)
     }
+    # Build the authoritative set of active selections from database records.
+    # Browser-submitted IDs are never trusted just because they exist.
     active = {}
     for choice_id, raw_selection in selections.items():
         choice = choices.get(choice_id)
@@ -136,6 +140,8 @@ def compute_price(product, base_price, selections):
         group = choice.group
         counts[group.id] = counts.get(group.id, 0) + 1
 
+    # Enforce merchant configuration server-side: required groups and maximum
+    # selections cannot be bypassed by modifying the browser request.
     for group_id, group in groups.items():
         count = counts.get(group_id, 0)
         if group.is_required and count == 0:
@@ -191,6 +197,9 @@ def compute_price(product, base_price, selections):
     )
     for rule in rules:
         conditions = list(rule.conditions.all())
+
+        # A pricing rule fires only when every configured condition matches.
+        # This is what lets one engine express product-specific combinations.
         matches = all(
             condition.choice_id in active
             and (condition.level_id is None or active[condition.choice_id]["level"] == condition.level_id)
@@ -210,8 +219,12 @@ def compute_price(product, base_price, selections):
         if rule.adjustment == "fixed":
             amount = rule.amount
         elif rule.adjustment == "percent":
+            # Percentage rules intentionally use the original product base,
+            # avoiding compounding earlier option/rule adjustments.
             amount = base_price * rule.amount / Decimal("100")
         elif rule.adjustment == "market":
+            # Market pricing uses the validated stored quote, configured units,
+            # and merchant multiplier (for example, a purity/material factor).
             market_value = _market_value(rule.market_index)
             amount = market_value * rule.market_units * rule.amount
             line["market"] = {
@@ -232,6 +245,9 @@ def compute_price(product, base_price, selections):
         lines.append(line)
 
     total = (base_price + sum((line["amount"] for line in lines), Decimal("0"))).quantize(CENT)
+
+    # Final defensive boundary: configuration may discount a price, but it
+    # must never produce a negative authoritative total.
     if total < 0:
         raise OptionError(
             "السعر النهائي لا يمكن أن يكون سالباً",
