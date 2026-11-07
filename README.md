@@ -1,10 +1,10 @@
-# MOHD Configurable Commerce Engine · Django Engineering Demo
+# Django Pricing Engine Demo
 
-**One reusable customization and pricing engine. Three industries. Real server-side calculations.**
+**An isolated, runnable Django pricing-engine demo. Three industries. Server-authoritative calculations.**
 
-A focused, runnable demonstration of engineering work from a larger private Django/Django Oscar commerce backend. The important part is genuine: the pricing function used here follows the original backend's `compute_price()` logic, backed by adapted ORM models and synthetic configuration data. The website submits selections to Django; **it does not calculate prices in JavaScript**.
+A focused, runnable **pricing-engine demonstration** adapted from a larger private Django/Django Oscar commerce backend. The important part is genuine: the pricing function used here follows the original backend's `compute_price()` logic, backed by adapted ORM models and synthetic configuration data. The website submits selections to Django; **it does not calculate prices in JavaScript**.
 
-> **Scope:** Standalone local demo—not the original full Django Oscar store, no actual orders or payments, no production data, and no external credentials. See [`docs/SOURCE_MAP.md`](docs/SOURCE_MAP.md) for an exact breakdown of reused vs adapted vs demonstration-only code.
+> **Scope:** Standalone **pricing demo**, not the original full Django Oscar store, no actual orders or payments, no production data, and no external credentials. See [`docs/SOURCE_MAP.md`](docs/SOURCE_MAP.md) for an exact breakdown of reused vs adapted vs demonstration-only code.
 
 ![UI example](screenshots/desktop.png)
 
@@ -77,7 +77,7 @@ python manage.py test apps.demo -v 2
 | 18 | `test_snapshot_frozen_after_product_and_market_change` | Saved sample quotes remain unchanged after base prices and market rates change. |
 | 19 | `test_post_csrf_protected_in_real_browser` | A browser POST without a valid CSRF token is rejected. |
 
-**Verification:** The test suite previously passed locally on Windows with Python 3.12 and Django 6.1.3 (19/19). On **7 November 2026**, GitHub Actions also completed the Django checks, all 19 tests, and artifact packaging successfully. [View the successful run](https://github.com/MOHD97v/mohd-configurable-commerce-engine/actions/runs/42375493331).
+**Verification:** The test suite previously passed locally on Windows with Python 3.12 and Django 6.1.3 (19/19). On **7 November 2026**, GitHub Actions also completed the Django checks, all 19 tests, and artifact packaging successfully. [View the successful run](https://github.com/MOHD97v/django-pricing-engine-demo/actions/runs/42375493331).
 
 ## GitHub Actions — CI and demo artifact delivery
 
@@ -91,7 +91,7 @@ The workflow:
 4. **Only if the checks pass**, packages the runnable source, documentation, demo assets, and setup files into `commerce-pricing-demo.zip`.
 5. Uploads the ZIP as a GitHub Actions artifact named `commerce-pricing-demo` with **3-day retention** (it expires automatically to limit storage use).
 
-To inspect or download an artifact, open the [Actions runs](https://github.com/MOHD97v/mohd-configurable-commerce-engine/actions), choose a successful **Django CI and Demo Artifact** run, and find **Artifacts**. GitHub sign-in may be required to download artifacts. For an independent reproduction, a reviewer can fork the repository, enable Actions if prompted, then run the workflow in their own fork.
+To inspect or download an artifact, open the [Actions runs](https://github.com/MOHD97v/django-pricing-engine-demo/actions), choose a successful **Django CI and Demo Artifact** run, and find **Artifacts**. GitHub sign-in may be required to download artifacts. For an independent reproduction, a reviewer can fork the repository, enable Actions if prompted, then run the workflow in their own fork.
 
 **Scope:** This is automated continuous integration (CI) plus delivery of a **downloadable demo ZIP**; it does **not** deploy a website or production service, and it does not touch the private Django/Oscar platform or YAGARZ.
 
@@ -150,8 +150,8 @@ A single configurable product platform can interpret different product selection
 - This small demo intentionally uses `migrate --run-syncdb` rather than importing the private store's migrations or full Oscar dependencies. The original backend has its own migrations. Do not treat this as a deployment architecture.
 - All seeded products, prices and market quotes are **examples**, not Yagarz/ShipMatrix production values.
 
-## Repository scope
+## Repository scope — pricing demo only
 
-This public repository is intentionally isolated from the original private commerce backend. Leave `demo.sqlite3`, `.venv` and `.env` out of commits (already covered by `.gitignore`).
+This public repository contains an isolated pricing-engine demonstration, **not** the original private commerce platform or its production application. Leave `demo.sqlite3`, `.venv` and `.env` out of commits (already covered by `.gitignore`).
 
 Screenshots are UI previews; executable behavior requires running the Django server as described above.

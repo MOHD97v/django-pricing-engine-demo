@@ -1,10 +1,12 @@
-# Where this public demonstration comes from
+# Source map · Django pricing-engine demo
+
+**Scope:** This public repository demonstrates the pricing rules and a minimal Django interface; it is **not** the full commerce system.
 
 **Primary source (read-only):** `Modomutiorga/B2-Store`, branch `main`, reviewed 6 November 2026.
 
 The private source backend is a larger Django/Django Oscar system. This public sample is not a drop-in copy of the original shop and is not the deployed Yagarz platform. All fixture products, prices, and item names here are **synthetic demonstration data**.
 
-| Local demo component | Relationship to the original |
+| Pricing-demo component | Relationship to the original |
 |---|---|
 | `apps/options/pricing.py` | Preserves the real `compute_price()` calculation logic and its option validation, stepper default/credit semantics, market freshness checks, conditional rules, and negative-total rejection. Formatting/comments are condensed for this isolated extract. Source: `apps/options/pricing.py`, Git blob SHA `dd856e0b6703249b8c946d42c1e5793cfb8d28a7`. |
 | `apps/options/models.py` | Smaller compatible adaptation of the original `OptionGroup`, `OptionChoice`, `OptionLevel`, `ProductClassOption`, `MarketIndex`, `PricingRule`, `RuleCondition`. Removes unused media uploads, API credentials/provider management, and Oscar-specific models. |
