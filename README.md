@@ -44,16 +44,56 @@ If your terminal uses a restricted PowerShell execution policy, you can skip act
 
 Click **“Freeze this quote”** to save a demonstration-only JSON snapshot to the local SQLite database. The response freezes choice labels, quantities, adjustment rows and final amounts. It does **not** place a purchase order, charge money or contact a customer.
 
-## Run the automated tests
+## Automated testing — 19 Django tests
+
+All **19 tests** are defined in [`apps/demo/tests.py`](apps/demo/tests.py) under `ConfigurableCommerceTests`. Django discovers methods prefixed with `test_` and creates an isolated test database; the test class seeds synthetic jewelry, fashion, and food examples.
+
+Run the same checks locally as GitHub Actions:
 
 ```bash
-python manage.py test apps.demo -v 2
 python manage.py check
+python manage.py test apps.demo -v 2
 ```
 
-The tests cover required selections, maximum choices, cross-product invalid selections, stepper credits and limits, conditional gold/fashion/food pricing, market-rate availability and staleness, ignored client price tampering, VAT, negative final-price rejection, CSRF protection and historical snapshots.
+| # | Automated test | What it verifies |
+|---|---|---|
+| 1 | `test_homepage_and_three_examples` | Homepage responds and all three demo product categories are listed. |
+| 2 | `test_ring_uses_real_market_rule_and_vat` | Jewelry pricing applies the market rule and calculates 15% VAT. |
+| 3 | `test_gold_21k_applies_alternative_rule_not_both` | Switching to 21K applies only the matching gold rule. |
+| 4 | `test_required_option_cannot_be_missing` | Missing required selections return a validation error. |
+| 5 | `test_invalid_or_foreign_product_choice_rejected` | Unknown choices and choices belonging to another product are rejected. |
+| 6 | `test_max_select_is_server_enforced` | A group's maximum selections cannot be bypassed through the API. |
+| 7 | `test_food_default_included_stepper_not_double_charged` | Default-included food quantities are not charged a second time. |
+| 8 | `test_stepper_zero_quantity_returns_opt_in_credit` | Removing an included ingredient yields the configured opt-in credit. |
+| 9 | `test_stepper_quantity_limit` | Quantities above a configured stepper maximum are rejected. |
+| 10 | `test_food_level_and_quantity_rules` | Quantity, spice level, and ingredient-choice rules combine correctly. |
+| 11 | `test_wrong_level_id_rejected` | An invalid level ID is rejected. |
+| 12 | `test_fashion_percent_and_fixed_choice` | Fixed choice adjustments and percentage rules work together for fashion. |
+| 13 | `test_unavailable_market_rate_fails_closed` | Missing market data prevents a price quote. |
+| 14 | `test_stale_external_market_rate_fails_closed` | Expired external market data prevents a price quote. |
+| 15 | `test_client_supplied_price_is_ignored` | Client-submitted price, tax, and total values cannot override server pricing. |
+| 16 | `test_malformed_json_rejected` | Malformed JSON requests return HTTP 400. |
+| 17 | `test_negative_final_price_rejected` | Discount configurations that produce negative totals are rejected. |
+| 18 | `test_snapshot_frozen_after_product_and_market_change` | Saved sample quotes remain unchanged after base prices and market rates change. |
+| 19 | `test_post_csrf_protected_in_real_browser` | A browser POST without a valid CSRF token is rejected. |
 
-**Verified locally:** Python 3.12 + Django 6.1.3 on Windows — **19 tests passed successfully**. Django's system check reported no issues during the test run.
+**Verification:** The test suite previously passed locally on Windows with Python 3.12 and Django 6.1.3 (19/19). On **7 November 2026**, GitHub Actions also completed the Django checks, all 19 tests, and artifact packaging successfully. [View the successful run](https://github.com/MOHD97v/mohd-configurable-commerce-engine/actions/runs/42375493331).
+
+## GitHub Actions — CI and demo artifact delivery
+
+The repository includes [`.github/workflows/ci.yml`](.github/workflows/ci.yml), which runs automatically when changes are pushed to `main` or a pull request is opened, and can also be started manually using **Actions → Django CI and Demo Artifact → Run workflow**.
+
+The workflow:
+
+1. Checks out the repository and configures **Python 3.12** with pip caching.
+2. Installs the dependencies from `requirements.txt`.
+3. Runs `python manage.py check` and `python manage.py test apps.demo -v 2`.
+4. **Only if the checks pass**, packages the runnable source, documentation, demo assets, and setup files into `commerce-pricing-demo.zip`.
+5. Uploads the ZIP as a GitHub Actions artifact named `commerce-pricing-demo` with **3-day retention** (it expires automatically to limit storage use).
+
+To inspect or download an artifact, open the [Actions runs](https://github.com/MOHD97v/mohd-configurable-commerce-engine/actions), choose a successful **Django CI and Demo Artifact** run, and find **Artifacts**. GitHub sign-in may be required to download artifacts. For an independent reproduction, a reviewer can fork the repository, enable Actions if prompted, then run the workflow in their own fork.
+
+**Scope:** This is automated continuous integration (CI) plus delivery of a **downloadable demo ZIP**; it does **not** deploy a website or production service, and it does not touch the private Django/Oscar platform or YAGARZ.
 
 ## Architecture
 
